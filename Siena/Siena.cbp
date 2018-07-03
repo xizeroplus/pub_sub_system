@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Siena"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/Siena"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/Siena"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/Siena"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Siena">
+				<Option output="/home/mg2015started/modifiedsiena/5-14/Siena/Siena" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/Siena"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 Siena"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Siena/fast">
+				<Option output="/home/mg2015started/modifiedsiena/5-14/Siena/Siena" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/Siena"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 Siena/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/Siena/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/Comm.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/EventServer.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/PThreads.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/SENP.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/Siena.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/SienaIO.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/SimpleSiena.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/generator.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/Comm.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/Comm.icc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/EventServer.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/IO.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/IO.icc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/PThreads.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/PThreads.icc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/SENP.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/SENP.icc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/Siena.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/Siena.icc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/SienaIO.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/SimpleSiena.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/chrono_time.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/concurrentQueue.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/data_structure.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/generator.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/oldrein.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/printer.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/rein.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/set_util.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/siena.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/sienaconf.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/threadPool.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/include/util.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/main.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/oldrein.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/printer.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/rein.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/set_util.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/sienaserverconf.h">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/util.cc">
+			<Option target="Siena"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/Siena/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

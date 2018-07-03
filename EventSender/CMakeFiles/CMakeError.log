@@ -1,0 +1,114 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a05d6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a05d6.dir/build.make CMakeFiles/cmTC_a05d6.dir/build
+make[1]: Entering directory '/home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a05d6.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_a05d6.dir/CheckSymbolExists.c.o   -c /home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_a05d6
+/home/mg2015started/下载/clion-2017.2.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a05d6.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_a05d6.dir/CheckSymbolExists.c.o  -o cmTC_a05d6 
+CMakeFiles/cmTC_a05d6.dir/CheckSymbolExists.c.o：在函数‘main’中：
+CheckSymbolExists.c:(.text+0x16)：对‘pthread_create’未定义的引用
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a05d6.dir/build.make:97: recipe for target 'cmTC_a05d6' failed
+make[1]: *** [cmTC_a05d6] Error 1
+make[1]: Leaving directory '/home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a05d6/fast' failed
+make: *** [cmTC_a05d6/fast] Error 2
+
+File /home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0acf0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0acf0.dir/build.make CMakeFiles/cmTC_0acf0.dir/build
+make[1]: Entering directory '/home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0acf0.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_0acf0.dir/CheckFunctionExists.c.o   -c /home/mg2015started/下载/clion-2017.2.3/bin/cmake/share/cmake-3.8/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0acf0
+/home/mg2015started/下载/clion-2017.2.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0acf0.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_0acf0.dir/CheckFunctionExists.c.o  -o cmTC_0acf0 -lpthreads 
+/usr/bin/ld: 找不到 -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_0acf0.dir/build.make:97: recipe for target 'cmTC_0acf0' failed
+make[1]: *** [cmTC_0acf0] Error 1
+make[1]: Leaving directory '/home/mg2015started/modifiedsiena/3-17/EventSender/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0acf0/fast' failed
+make: *** [cmTC_0acf0/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ccc1d/fast"
+make[1]: Entering directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ccc1d.dir/build.make CMakeFiles/cmTC_ccc1d.dir/build
+make[2]: Entering directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ccc1d.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ccc1d.dir/CheckSymbolExists.c.o   -c /home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_ccc1d
+/home/mg2015started/下载/clion-2017.2.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ccc1d.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_ccc1d.dir/CheckSymbolExists.c.o  -o cmTC_ccc1d 
+CMakeFiles/cmTC_ccc1d.dir/CheckSymbolExists.c.o：在函数‘main’中：
+CheckSymbolExists.c:(.text+0x16)：对‘pthread_create’未定义的引用
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ccc1d.dir/build.make:97: recipe for target 'cmTC_ccc1d' failed
+make[2]: *** [cmTC_ccc1d] Error 1
+make[2]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ccc1d/fast' failed
+make[1]: *** [cmTC_ccc1d/fast] Error 2
+make[1]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+
+File /home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_71f33/fast"
+make[1]: Entering directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_71f33.dir/build.make CMakeFiles/cmTC_71f33.dir/build
+make[2]: Entering directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_71f33.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_71f33.dir/CheckFunctionExists.c.o   -c /home/mg2015started/下载/clion-2017.2.3/bin/cmake/share/cmake-3.8/Modules/CheckFunctionExists.c
+Linking C executable cmTC_71f33
+/home/mg2015started/下载/clion-2017.2.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_71f33.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_71f33.dir/CheckFunctionExists.c.o  -o cmTC_71f33 -lpthreads 
+/usr/bin/ld: 找不到 -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_71f33.dir/build.make:97: recipe for target 'cmTC_71f33' failed
+make[2]: *** [cmTC_71f33] Error 1
+make[2]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_71f33/fast' failed
+make[1]: *** [cmTC_71f33/fast] Error 2
+make[1]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
+
+

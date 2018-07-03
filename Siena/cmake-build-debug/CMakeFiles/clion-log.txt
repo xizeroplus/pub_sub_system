@@ -1,0 +1,4 @@
+/home/mg2015started/下载/clion-2017.2.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/mg2015started/modifiedsiena/3-17/Siena
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mg2015started/modifiedsiena/3-17/Siena

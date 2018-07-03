@@ -1,0 +1,3 @@
+/home/mg2015started/modifiedsiena/3-17/Siena/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/mg2015started/modifiedsiena/3-17/Siena/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mg2015started/modifiedsiena/3-17/Siena/cmake-build-debug/CMakeFiles/Siena.dir

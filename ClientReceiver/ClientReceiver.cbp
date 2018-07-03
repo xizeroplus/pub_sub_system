@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ClientReceiver"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/ClientReceiver"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/ClientReceiver"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/ClientReceiver"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ClientReceiver">
+				<Option output="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/ClientReceiver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/ClientReceiver"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 ClientReceiver"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ClientReceiver/fast">
+				<Option output="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/ClientReceiver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mg2015started/modifiedsiena/5-14/ClientReceiver"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/5"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/5"/>
+					<Add directory="/usr/include/c++/5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 ClientReceiver/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Comm.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/PThreads.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SENP.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Siena.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SienaIO.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SimpleSiena.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Subscriber.cpp">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/generator.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.icc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/IO.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/IO.icc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/PThreads.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/PThreads.icc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.icc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SimpleSiena.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/chrono_time.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/generator.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/printer.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/siena.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/util.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/printer.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/set_util.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/sienaserverconf.h">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/util.cc">
+			<Option target="ClientReceiver"/>
+		</Unit>
+		<Unit filename="/home/mg2015started/modifiedsiena/5-14/ClientReceiver/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

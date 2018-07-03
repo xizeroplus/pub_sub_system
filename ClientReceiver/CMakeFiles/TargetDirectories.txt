@@ -1,0 +1,3 @@
+/home/mg2015started/modifiedsiena/5-14/ClientReceiver/CMakeFiles/edit_cache.dir
+/home/mg2015started/modifiedsiena/5-14/ClientReceiver/CMakeFiles/rebuild_cache.dir
+/home/mg2015started/modifiedsiena/5-14/ClientReceiver/CMakeFiles/ClientReceiver.dir
