@@ -33,11 +33,11 @@ options:\n\
 int main (int argc, char *argv[])
 {
 
-    string host = "udp://192.168.101.36:7001/";
-    string h = "192.168.101.36";
+    string host = "udp://127.0.0.1:7001/";
+    string h = "127.0.0.1";
     int port=7001;
 
-    string server = "udp://192.168.101.34:1969";
+    string server = "udp://127.0.0.1:1969";
 
     cout << "begin" << endl;
     int subs;           // Number of subscriptions.

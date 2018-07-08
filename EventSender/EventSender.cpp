@@ -29,8 +29,8 @@ options:\n\
 
 int main (int argc, char *argv[])
 {
-    string host = "udp://192.168.101.36:7001/";
-    string server = "udp://192.168.101.34:1969";
+    string host = "udp://127.0.0.1:7001/";
+    string server = "udp://127.0.0.1:1969";
     int subs;           // Number of subscriptions.
     int pubs;           // Number of publications.
     int attDom;           // Total number of attributes, i.e. dimensions.
