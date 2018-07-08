@@ -43,12 +43,6 @@ namespace Siena {
 #endif
 class Siena;
 class Notifiable;
-class Request;
-class AttributeValue;
-class Event;
-class AttributeConstraint;
-class Filter;
-class Pattern;
 
 class Siena {
  public:
@@ -85,87 +79,7 @@ enum SienaType {
 
 extern const string	SienaTypeDescription[];
 
-class AttributeValue {
- public:
-			AttributeValue();
-    /** copy constructor */
-			AttributeValue(const AttributeValue &v);
-    /** construct from a string */
-			AttributeValue(const string &);
-    /** construct from a C-style string */
-			AttributeValue(const char *);
-    /** construct from an <code>int</code> */
-			AttributeValue(int);
-    /** construct from a <code>bool</code> */
-			AttributeValue(bool);
-    /** construct from a <code>double</code> */
-			AttributeValue(double);
-    //@}
-    //
-    // more constructors here with the specific types
-    // ... work in progress ...
-    //
-		~AttributeValue();
-    /**@name Access functions */
-    //@{
-    /** returns the actual type of this value */
-    SienaType		type()					const;
 
-    int	&		int_value();
-
-    bool &		bool_value();
-
-    string &		string_value();
-
-    double &		double_value();
-
-    const int &		int_value()				const;
-
-    const bool &	bool_value()				const;
-
-    const string &	string_value()				const;
-
-    const double &	double_value()				const;
-
-			operator int ()				const;
-
-			operator string ()			const;
-
-			operator bool ()			const;
-
-			operator double ()			const;
-    /** copy */
-    AttributeValue &	operator = (const AttributeValue &);
-    /** from string */
-    AttributeValue &	operator = (const string &);
-    /** from C-style string */
-    AttributeValue &	operator = (const char *);
-    /** from int */
-    AttributeValue &	operator = (int);
-    /** from bool */
-    AttributeValue &	operator = (bool);
-    /** from double */
-    AttributeValue &	operator = (double);
-    //@}
-
-    bool		operator == (const AttributeValue &)	const;
-    bool		operator < (const AttributeValue &)	const;
-
- protected:
-    SienaType		_type;
-    union {
-	string *	str;
-	int		num;
-	bool		bln;
-	double		dbl;
-    };
-};
-
-
-typedef map<string, AttributeValue> AttributeSet;
-
-class Request: public AttributeSet {
-};
 
 enum SienaOperator {
     Siena_eq		= 1,
@@ -182,9 +96,6 @@ enum SienaOperator {
 
 extern const string	SienaOperatorDescription[];
 
-extern bool		apply_operator(SienaOperator op,
-				       const AttributeValue & x,
-				       const AttributeValue & y);
 
 /** generic exception */
 class SienaException: public exception {

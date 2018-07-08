@@ -466,7 +466,14 @@ void UDPSender::send(const char * buf, size_t s) throw (CommException) {
 	if (sock_fd < 0)
 	    throw SocketError(SocketError::Create, errno);
 
-	sockaddr_in addr;
+
+		struct ifreq ifr;
+		memset(&ifr, 0x00, sizeof(ifr));
+		strncpy(ifr.ifr_name, "eth0", IFNAMSIZE);
+		setsockopt(sock_fd, SOL_SOCKET, SO_BINDTODEVICE, (char *)&ifr, sizeof(ifr));
+
+
+		sockaddr_in addr;
 	addr.sin_addr.s_addr = ip;
 	addr.sin_port = htons(port);
 	addr.sin_family = AF_INET;

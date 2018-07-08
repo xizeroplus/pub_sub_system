@@ -55,6 +55,7 @@ using namespace std;
 
 #include "include/PThreads.h"
 #include "include/EventServer.h"
+#include "include/data_structure.h"
 
 #define SIENA_SERVER_PORT 1969
 
@@ -200,86 +201,33 @@ void * Handler::run()
 	try {
 	    LOGBEGIN("");
         string str = string(buf, len);
-        decode(str,r);
+
+		istringstream is(str);
+        decode(is,r);
 
 	    LOG(r);
-	    Request::iterator mi = r.find(SENP::Method);
-	    if (mi == r.end()) {
-		connected = false;
-		LOGEND(SENP::RE_BadRequest << " missing method");
-	    } else if ((*mi).second.type() != Siena_string) {
-		connected = false;
-		LOGEND(SENP::RE_BadRequest << " bad type for method");
-	    } else { 
-		const string & method = (*mi).second.string_value();
-		if (method == SENP::PUB) {
+		if (r.type == 1) {
 		    Pub pub;
-		    decode(str,r,pub);
+		    decode(is, pub);
             connected = false;
 		    LOGEND(pub << SENP::RE_Ok);
 		    ESLock.wlock(); locked = true;
             //LOG(r);
             //LOG(pub);
 		    EventService.publish(r, pub);
-		} else if (method == SENP::SUB) {
+		} else if (r.type == 0) {
 		    IntervalSub sub;
-            decode(str,r,sub);
+            decode(is, sub);
             connected = false;
-		    LOGEND(SENP::RE_Ok);
+		    LOGEND(sub << SENP::RE_Ok);
 		    ESLock.wlock(); locked = true;
             //LOG(r);
             //LOG(sub);
 		    EventService.subscribe(r,sub);
-		}/* else if (method == SENP::UNS) {
-			IntervalSub sub;
-			conn >> sub;
-		    conn << SENP::RE_Ok << " unsubscription accepted" << endl;
-		    conn.close(); connected = false;
-		    LOGEND(sub << SENP::RE_Ok);
-		    ESLock.wlock(); locked = true;
-		    EventService.unsubscribe(r,f);
-		} else if (method == SENP::ADV) {
-		    Filter f;
-		    conn >> f;
-		    conn << SENP::RE_Ignored << " advertisement accepted" << endl;
-		    conn.close(); connected = false;
-		    LOGEND(f << SENP::RE_Ignored);
-		    ESLock.wlock(); locked = true;
-		    EventService.advertise(r,f);
-		} else if (method == SENP::UNA) {
-		    Filter f;
-		    conn >> f;
-		    conn << SENP::RE_Ignored << " unadvertisement accepted" << endl;
-		    conn.close(); connected = false;
-		    LOGEND(f << SENP::RE_Ignored);
-		    ESLock.wlock(); locked = true;
-		    EventService.unadvertise(r,f);
-		} else if (method == SENP::HLO) {
-		    conn << SENP::RE_Ok << " connection accepted" << endl;
-		    conn.close(); connected = false;
-		    LOGEND(SENP::RE_Ok);
-		    ESLock.wlock(); locked = true;
-		    EventService.connect_peer(r);
-		} else if (method == SENP::BYE) {
-		    //
-		    // ...work in progress...
-		    //
-		    conn << SENP::RE_Ok << " goodbye" << endl;
-		    conn.close(); connected = false;
-		    LOGEND(SENP::RE_Ok);
-		    ESLock.wlock(); locked = true;
-		    EventService.unsubscribe_all(r);
-		} else if (method == SENP::DBG) {
-		    conn << SENP::RE_Ok << " server status ok" << endl;
-		    ESLock.rlock(); locked = true;
-		    EventService.print_poset(conn);
-		    conn.close(); connected = false;
-		    LOGEND(SENP::RE_Ok);
-		} */else {
+		}else {
             connected = false;
 		    LOGEND(SENP::RE_BadRequest);
 		}
-	    }
 	} catch (exception &ex) {
 	    if (connected) {
 		LOGEND(SENP::RE_Error << ' ' << ex.what());
@@ -492,42 +440,9 @@ void init_event_service(int valDom,int k, int new_buck_num)
 
     EventService.set_receiver(r);
 
-    //if (db_file != NULL) EventService.set_db(db_file);
-    /*
-	if (monitor != NULL) {
-	try {
-	    EventService.set_monitor(new SimpleMonitor(monitor, monitor_port));
-	} catch (exception &ex) {
-	    cerr << ex.what() << endl;
-	}
-    }
-     */
 
     if (peer_server != NULL) {
 	iostream *s;
-		/*
-	URI peer_uri(peer_server);
-	cerr << "connecting to peer: " << peer_uri.to_string() << endl;
-	try {
-	    s = peer_uri.open_connection();
-	} catch (SocketError &se) {
-	    cerr << "errno: " << se.errno_value << endl;
-	    throw;
-	}
-	Request r;
-	r[SENP::Method] = SENP::HLO;
-	r[SENP::Peer] = myUri;
-	*s << r << endl << flush;
-	string reply;
-	*s >> reply;
-	if (reply == SENP::RE_Ok) {
-	    EventService.initialize(myUri, peer_uri.to_string());
-	} else {
-	    //
-	    // should do something here ...work in progress...
-	    //
-	}
-		 */
 	delete(s);
     } else {
         LOGENTRY("BEGIN2");

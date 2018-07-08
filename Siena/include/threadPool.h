@@ -75,9 +75,9 @@ template<class Type>
 void ThreadPool<Type>::hand(Type &record)
 {
     Pub pub = record.second;
-    struct timespec tv;
-    clock_gettime(CLOCK_REALTIME, &tv);
-    double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
+    //struct timespec tv;
+    //clock_gettime(CLOCK_REALTIME, &tv);
+    //double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
 
     string destination = record.first;
 
@@ -85,7 +85,7 @@ void ThreadPool<Type>::hand(Type &record)
     //cout << "bad" << record.first << endl;
     try{
         Request r;
-        r[SENP::Method] = SENP::PUB;
+        r.type  = 1;
         //r[SENP::Publisher] = myuri;
         string packet = encode(r, pub);
         master->send(packet.data(), packet.size());
@@ -95,10 +95,10 @@ void ThreadPool<Type>::hand(Type &record)
         cout << "matching" << endl;
     }
     delete(master);
-    clock_gettime(CLOCK_REALTIME, &tv);
-    double time_interval_2 = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
-    thread t(&ThreadPool<Type>::writeLog,this,pub.pub_id, time_interval,time_interval_2,time_interval_2-time_interval);
-    t.detach();
+    //clock_gettime(CLOCK_REALTIME, &tv);
+    //double time_interval_2 = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
+    //thread t(&ThreadPool<Type>::writeLog,this,pub.pub_id, time_interval,time_interval_2,time_interval_2-time_interval);
+    //t.detach();
 }
 
 template<class Type>

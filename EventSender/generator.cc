@@ -218,7 +218,7 @@ void intervalGenerator::GenSubList()
     {
         IntervalSub &sub = subList[i];
         fileStream << sub;
-        fileStream << "\n";
+        //fileStream << "\n";
     }
     fileStream.close();
 }
@@ -325,7 +325,7 @@ void intervalGenerator::GenPubList()
     {
         Pub &pub = pubList[i];
         fileStream << pub;
-        fileStream << "\n";
+        //fileStream << "\n";
     }
     fileStream.close();
 }

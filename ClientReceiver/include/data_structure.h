@@ -83,6 +83,13 @@ public:
     vector<Pair> pairs;
 };
 
+class Request
+{
+public:
+    int type;
+    //0:sub ; 1:pub;
+};
+
 #ifdef HAVE_CXX_NAMESPACE
 }; // namespace Siena
 #endif

@@ -1,0 +1,499 @@
+//
+// Created by mg2015started on 18-7-7.
+//
+
+#include "sienaserverconf.h"
+#include <fstream>
+#include <errno.h>
+#include <strings.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <netdb.h> // defines MAXHOSTNAMELEN
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <signal.h>
+
+#include <stdio.h>
+
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+using namespace std;
+
+#include <exception>
+
+#include "include/siena.h"
+
+#include "include/PThreads.h"
+#include "include/EventServer.h"
+#include "include/data_structure.h"
+
+#define SIENA_SERVER_PORT 1969
+
+class Handler;
+
+//
+// server private functions
+//
+static void		print_usage(const char *programname);
+
+void print_usage(const char *programname)
+{
+    cerr << "Siena server v." << EventServer::Version << endl;
+    cerr << "Copyright (c) 1998-2002 University of Colorado at Boulder" << endl;
+    cerr << "see http://www.cs.colorado.edu/users/serl/siena/" << endl;
+    cerr << "Usage: " << programname << " [options...]\n\
+options:\n\
+\t-port number\n\
+\t-identity URI\n\
+\t-connect URI\n\
+\t-monitor hostname\n\
+\t-monitorport number\n\
+\t-log filename\n\
+\t-db filename\n\
+\t-detach\n\
+\t-servers number\n\
+\t-strikeouts number\n\
+" << endl;
+
+    exit(-1);
+}
+
+//
+// Event server structure (contains the subscription tables etc.)
+//
+static EventServer			EventService;
+//
+// ESLock
+//
+static Lock				ESLock;
+static Mutex				NCLock;
+static Mutex				* LogLock;
+static Condition			AcceptCond;
+static Condition			ServeCond;
+
+static list<Handler *>			Handlers;
+static const int SENP_MAXPACKETLEN = 1024;
+static bool				ServerActive	= true;
+static char pktbuf[SENP_MAXPACKETLEN];
+static ssize_t pktsize;
+//
+// NewConnection is the buffer between the acceptor thread and the
+// handler threads. The value of NewConnection can be:
+// >= 0  --> new connection to handle
+//           the acceptor suspends on AcceptCond
+//           handlers are signaled, the first one to get the new connection
+//	     sets it to -1
+// -1    --> acceptor ready to accept
+// -2    --> server must shutdown
+//
+#define NC_TO_ACCEPT	-1
+#define NC_TO_SHUTDOWN	-2
+#define NC_TO_HANDLE	-3
+
+static int				NewConnection	= NC_TO_ACCEPT;
+
+static unsigned short			port		= SIENA_SERVER_PORT;
+static const char *			peer_server	= NULL;
+static const char *			my_uri		= NULL;
+static const char *			log_file	= NULL;
+static bool				detach		= false;
+
+static int				handlers	= 1;
+
+static list<Handler *>			HandlersList;
+
+static ofstream *			Logf		= NULL;
+static struct timeval			Logtv;
+
+#ifdef NO_LOG
+#define LOGENTRY(x)
+#define LOGBEGIN(x)
+#define LOGEND(x)
+#else
+#define LOGENTRY(x) {if(Logf != NULL) { \
+    LogLock->lock(); gettimeofday(&Logtv,NULL); \
+    *Logf << ctime(&(Logtv.tv_sec)) << x << endl << flush; LogLock->unlock();}}
+
+#define LOGBEGIN(x) {if(Logf != NULL) { \
+    LogLock->lock(); gettimeofday(&Logtv,NULL); \
+    *Logf << ctime(&(Logtv.tv_sec)) << x << flush; }}
+
+#define LOGEND(x) {if(Logf != NULL) { \
+    *Logf << x << endl << flush; LogLock->unlock();}}
+#define LOG(x) {if(Logf != NULL) { *Logf << x << flush; }}
+#endif
+
+
+void quit_main_loop(int)
+{
+    ServerActive = false;
+}
+
+class Handler : public Thread {
+private:
+
+    virtual void * run();
+};
+
+void * Handler::run()
+{
+    bool connected;
+    bool locked;
+    Request r;
+
+    while (true) {
+        NCLock.lock();
+        while(NewConnection == NC_TO_ACCEPT)
+            ServeCond.wait(NCLock);
+
+        if (NewConnection == NC_TO_SHUTDOWN) {
+            ServeCond.signal();
+            NCLock.unlock();
+            return 0;
+        }
+
+        char buf[SENP_MAXPACKETLEN];
+        strcpy(buf,pktbuf);
+        ssize_t len = pktsize;
+        connected = true;
+
+        NewConnection = NC_TO_ACCEPT;
+        AcceptCond.signal();
+        NCLock.unlock();
+
+        locked = false;
+
+        try {
+            LOGBEGIN("");
+            string str = string(buf, len);
+
+            istringstream is(str);
+            decode(is,r);
+
+            LOG(r);
+            if (r.type == 1) {
+                Pub pub;
+                decode(is, pub);
+                connected = false;
+                LOGEND(pub << SENP::RE_Ok);
+                ESLock.wlock(); locked = true;
+                //LOG(r);
+                //LOG(pub);
+                EventService.publish(r, pub);
+            } else if (r.type == 0) {
+                IntervalSub sub;
+                decode(is, sub);
+                connected = false;
+                LOGEND(sub << SENP::RE_Ok);
+                ESLock.wlock(); locked = true;
+                //LOG(r);
+                //LOG(sub);
+                EventService.subscribe(r,sub);
+            }else {
+                connected = false;
+                LOGEND(SENP::RE_BadRequest);
+            }
+        } catch (exception &ex) {
+            if (connected) {
+                LOGEND(SENP::RE_Error << ' ' << ex.what());
+                connected = false;
+            }
+        }
+        if (locked) {
+            ESLock.unlock();
+            locked = false;
+        }
+    }
+    return 0; // unreachable statement
+}
+
+void main_loop()
+{
+    Thread::unblock_signal(SIGINT);
+    Thread::unblock_signal(SIGTERM);
+
+    while (true) {
+        NCLock.lock();
+        while(NewConnection != NC_TO_SHUTDOWN
+              && NewConnection != NC_TO_ACCEPT) {
+            AcceptCond.wait(NCLock);
+        }
+
+        while (NewConnection == NC_TO_ACCEPT && ServerActive) {
+            try {
+                memset(pktbuf,0,SENP_MAXPACKETLEN);
+                pktsize = EventService.receiver->receive(pktbuf,SENP_MAXPACKETLEN);
+                NewConnection = NC_TO_HANDLE;
+            } catch (exception &ex) {
+                NewConnection = NC_TO_SHUTDOWN;
+            }
+        }
+        if (!ServerActive || NewConnection == NC_TO_SHUTDOWN) break;
+
+        ServeCond.signal();
+        NCLock.unlock();
+    }
+    NewConnection = NC_TO_SHUTDOWN;
+    ServeCond.signal();
+    NCLock.unlock();
+}
+
+void detach_server()
+{
+    if (detach) {
+        pid_t pid;
+        switch((pid = fork())) {
+            case -1:
+                cerr << "fork() failed!" << endl;
+                exit(-1);
+            case 0: {
+                int i;
+                //
+                // child process ... detach from everything
+                //
+                // for some reason HPUX doesn't define TIOCNOTTY
+                // whatever... no time to look into this now
+                // ...work in progress...
+#ifdef HAVE_SETSID
+                setsid();
+#else  /* !HAVE_SETSID */
+                #ifdef HAVE_GETPGRP
+#ifdef GETPGRP_VOID /* POSIX.1 style */
+	    /* lose controlling terminal and change process group */
+	    setpgrp();
+#else /* BSD style */
+#ifdef HAVE_TIOCNOTTY
+	    if ((i=open("/dev/tty", O_RDWR))>=0) {
+		ioctl(i, TIOCNOTTY, 0);
+		close(i);
+	    }
+	    setpgrp(0, getpid());        /* change process group */
+#endif
+#endif /* SETPGRP_VOID */
+#endif /* HAVE_GETPGRP */
+#endif /* !HAVE_SETSID */
+#ifdef HAVE_GETDTABLESIZE
+                /*
+                for(i=getdtablesize()-1; i>=0; --i)
+                if (i != EventService.receiver->get_fd())
+                    close(i);
+                 */
+#endif
+                //
+                //  after closing *all* file descriptors, it is good
+                //  to open the usual stdin/out/err (0,1,2) on a null
+                //  device because many library functions assume these
+                //  fds to be valid.
+                //  Note that UNIX opens fds from 0 in ascending order.
+                //
+                i = open("/dev/null", O_RDWR);	/* 0 - stdin  */
+                dup(i);
+                dup(i);
+                break;
+            }
+            default:
+                cout << pid << endl;
+                exit(0);
+        }
+    }
+}
+
+void parse_command_options(int argc, char *argv[])
+{
+    int i;
+
+    portstr = getenv("MONITORPORT");
+    monitor = getenv("MONITOR");
+
+    for (i=1; i< argc; ++i) {		// parses command-line parameters
+        if (strcmp(argv[i], "-port")==0) {
+            if (++i < argc) {
+                port = atoi(argv[i]);
+            } else {
+                print_usage(argv[0]);
+            }
+            /*} else if (strcmp(argv[i], "-strikeouts")==0) {
+                if (++i < argc) {
+                unsigned short strikeouts = atoi(argv[i]);
+                EventService.attempts(strikeouts);
+                } else {
+                print_usage(argv[0]);
+                }
+                */
+        } else if (strcmp(argv[i], "-servers")==0) {
+            if (++i < argc) {
+                handlers = atoi(argv[i]);
+            } else {
+                print_usage(argv[0]);
+            }
+        } else if (strcmp(argv[i], "-identity")==0) {
+            if (++i < argc) {
+                my_uri = argv[i];
+            } else {
+                print_usage(argv[0]);
+            }
+        }
+        else if (strcmp(argv[i], "-detach")==0) {
+            detach = true;
+        }
+        else if (strcmp(argv[i], "-log")==0) {
+            if (++i < argc) {
+                log_file = argv[i];
+            } else {
+                print_usage(argv[0]);
+            }
+        }
+            /*
+        else if (strcmp(argv[i], "-db")==0) {
+            if (++i < argc) {
+            db_file = argv[i];
+            } else {
+            print_usage(argv[0]);
+            }
+        }
+             */
+        else if (strcmp(argv[i], "-monitorport")==0) {
+            if (++i < argc) {
+                portstr = argv[i];
+            } else {
+                print_usage(argv[0]);
+            }
+        }
+        else if (strcmp(argv[i], "-monitor")==0) {
+            if (++i < argc) {
+                monitor = argv[i];
+            } else {
+                print_usage(argv[0]);
+            }
+        }
+        else if (strcmp(argv[i], "-connect")==0) {
+            if (++i < argc) {
+                peer_server = argv[i];
+            } else {
+                print_usage(argv[0]);
+            }
+        }
+        else {
+            print_usage(argv[0]);
+        }
+    }
+
+    if (portstr != NULL) monitor_port = atoi(portstr);
+}
+
+void open_log_file() {
+    if (log_file != NULL) {
+        Logf = new ofstream(log_file);
+
+        if (!(*Logf)) {
+            cerr << "can't open log file " << log_file << endl;
+            delete(Logf);
+            Logf = NULL;
+            exit(1);
+        } else {
+            LogLock = new Mutex();
+        }
+    }
+}
+
+void init_event_service(int valDom,int k, int new_buck_num)
+{
+
+    LOGENTRY("BEGIN");
+
+    UDPReceiver *r = new UDPReceiver(port, my_uri);// create receiver for
+
+    EventService.set_receiver(r);
+
+
+    if (peer_server != NULL) {
+        iostream *s;
+        delete(s);
+    } else {
+        LOGENTRY("BEGIN2");
+        EventService.initialize(my_uri,valDom,k, new_buck_num);  LOGENTRY("End");
+    }
+}
+
+void create_handlers_pool()
+{
+    Handler * h;
+    for(int i=handlers; i > 0 ; --i) {
+        h = new Handler();
+        Handlers.push_front(h);
+        h->start();
+    }
+}
+
+void join_handlers_pool()
+{
+    list<Handler*>::iterator hli;
+    for(hli = Handlers.begin(); hli != Handlers.end(); ++hli) {
+        (*hli)->join();
+        delete(*hli);
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    int subs;           // Number of subscriptions.
+    int pubs;           // Number of publications.
+    int attDom;           // Total number of attributes, i.e. dimensions.
+    int k;           // Number of constraints(predicates) in one sub.
+    int m;              // Number of constraints in one pub.
+    int valDom;         // Cardinality of values.
+    int subAttDis;         // The distribution of attributes in subs and pubs. 0:uniform distribution | 1:Zipf distribution
+    int subValDis;         // The distribution of values in subs and pubs. 0:uniform
+    int pubAttDis;         // The distribution of attributes in subs and pubs. 0:uniform distribution | 1:Zipf distribution
+    int pubValDis;         // The distribution of values in subs and pubs. 0:uniform
+    double subAttalpha;       // Parameter for Zipf distribution.
+    double pubAttalpha;
+    double subValalpha;
+    double pubValalpha;
+    double width;       // Width of a predicate.
+    double equalRatio;
+    int old_buck_num;
+    int new_buck_num;
+
+    ifstream parafile;
+    parafile.open(string("./paras/paras_1")+string(".txt"));
+    parafile >> subs >> pubs >> k >> m >> subAttDis >> subValDis >> pubAttDis >> pubValDis >> attDom >> valDom >> subAttalpha >>subValalpha >>  pubAttalpha >> pubValalpha >> width >> equalRatio >> old_buck_num >> new_buck_num;
+    parafile.close();
+    ofstream fileStream;
+    fileStream.open("sendthreadLog.txt");
+    fileStream.close();
+
+
+    try {
+        parse_command_options(argc, argv);
+        if (detach) detach_server();
+        open_log_file();
+        LOGENTRY("111111");
+        LOGENTRY(valDom);
+        LOGENTRY(k);
+        LOGENTRY(new_buck_num);
+        init_event_service(valDom,k, new_buck_num);
+        LOGENTRY("1");
+
+        create_handlers_pool();
+        LOGENTRY("2");
+        main_loop();
+        LOGENTRY("3");
+        join_handlers_pool();
+
+        LOGENTRY("shutdown");
+        //EventService.shutdown();
+        LOGENTRY("END");
+        if (Logf != NULL) { delete(Logf); }
+    } catch (exception &ex) {
+        cerr << ex.what() << endl;
+        return -1;
+    }
+    return 0;
+};

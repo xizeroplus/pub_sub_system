@@ -11,8 +11,8 @@ using namespace std;
 
 class tmpoint{
 public:
-    int sec;
-    int ns;
+    int sec = 0;
+    int ns = 0;
 };
 
 class Cnt{
@@ -81,6 +81,13 @@ public:
     int pub_id;
     int size;
     vector<Pair> pairs;
+};
+
+class Request
+{
+public:
+    int type;
+    //0:sub ; 1:pub;
 };
 
 #ifdef HAVE_CXX_NAMESPACE
