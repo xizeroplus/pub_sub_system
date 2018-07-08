@@ -123,7 +123,7 @@ void SimpleSiena::exit_loop()
 
 void SimpleSiena::main_loop()
 {
-    int SENP_MAXPACKETLEN = 1024;
+    int SENP_MAXPACKETLEN = 102400;
     if (receiver == NULL) exit(-1);
     char pktbuf[SENP_MAXPACKETLEN];
     ssize_t pktsize;

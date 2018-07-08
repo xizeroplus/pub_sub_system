@@ -102,7 +102,7 @@ static Condition			AcceptCond;
 static Condition			ServeCond;
 
 static list<Handler *>			Handlers;
-static const int SENP_MAXPACKETLEN = 1024;
+static const int SENP_MAXPACKETLEN = 102400;
 static bool				ServerActive	= true;
 static char pktbuf[SENP_MAXPACKETLEN];
 static ssize_t pktsize;
