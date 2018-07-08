@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Comm.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/Comm.cc
 include/sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 stdio.h
 -
 winsock.h
@@ -34,7 +34,7 @@ string.h
 sys/param.h
 -
 include/Comm.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Comm.h
 string
 -
 cctype
@@ -44,27 +44,27 @@ siena/Comm.icc
 stdio.h
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/PThreads.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/PThreads.cc
 include/sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 include/PThreads.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/PThreads.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/PThreads.h
 PThreads.icc
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/PThreads.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/PThreads.icc
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SENP.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/SENP.cc
 string
 -
 sstream
 -
 include/SENP.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SENP.h
 siena/SENP.icc
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Siena.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/Siena.cc
 include/sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 cstdio
 -
 iostream
@@ -72,13 +72,13 @@ iostream
 string
 -
 include/Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 siena/Siena.icc
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SienaIO.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/SienaIO.cc
 include/sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 cctype
 -
 iostream
@@ -86,13 +86,13 @@ iostream
 string
 -
 include/Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 include/SienaIO.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/SimpleSiena.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/SimpleSiena.cc
 include/sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 sstream
 -
 iostream
@@ -100,15 +100,15 @@ iostream
 fstream
 -
 include/Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 include/SienaIO.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 include/SimpleSiena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SimpleSiena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SimpleSiena.h
 include/SENP.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SENP.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/Subscriber.cpp
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/Subscriber.cpp
 iostream
 -
 fstream
@@ -116,19 +116,19 @@ fstream
 exception
 -
 include/siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/siena.h
 include/generator.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/generator.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/generator.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/generator.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/generator.cc
 include/generator.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/generator.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/generator.h
 include/SienaIO.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Comm.h
 sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 winsock.h
 -
 sys/socket.h
@@ -140,25 +140,25 @@ exception
 string
 -
 Comm.icc
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Comm.icc
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Comm.icc
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/PThreads.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/PThreads.h
 pthread.h
 -
 signal.h
 -
 PThreads.icc
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/PThreads.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/PThreads.icc
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SENP.h
 string
 -
 Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 Comm.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Comm.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Comm.h
 stdlib.h
 -
 string.h
@@ -166,7 +166,7 @@ string.h
 stdio.h
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 iostream
 -
 string
@@ -178,55 +178,55 @@ list
 exception
 -
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 Siena.icc
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.icc
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.icc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.icc
 Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 iostream
 -
 Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 stdio.h
 -
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 sstream
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SimpleSiena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SimpleSiena.h
 iostream
 -
 mutex
 -
 Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 SienaIO.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 SENP.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SENP.h
 thread
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/chrono_time.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/chrono_time.h
 chrono
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 string
 -
 vector
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/generator.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/generator.h
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 iostream
 -
 fstream
@@ -240,7 +240,7 @@ stdio.h
 cmath
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/printer.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/printer.h
 stdlib.h
 -
 iostream
@@ -248,29 +248,29 @@ iostream
 fstream
 -
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 util.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/util.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/util.h
 vector
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/siena.h
 sienaconf.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 Siena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/Siena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/Siena.h
 SienaIO.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SienaIO.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SienaIO.h
 SENP.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SENP.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SENP.h
 SimpleSiena.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/SimpleSiena.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/SimpleSiena.h
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/sienaconf.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/sienaconf.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/util.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/util.h
 stdlib.h
 -
 stdio.h
@@ -282,27 +282,27 @@ fstream
 sstream
 -
 data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 generator.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/generator.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/generator.h
 chrono_time.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/chrono_time.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/chrono_time.h
 printer.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/printer.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/printer.h
 cmath
 -
 vector
 -
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/printer.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/printer.cc
 include/printer.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/printer.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/printer.h
 sstream
 -
 include/data_structure.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/data_structure.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/data_structure.h
 
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/util.cc
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/util.cc
 include/util.h
-/home/mg2015started/modifiedsiena/5-14/ClientReceiver/include/util.h
+/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/include/util.h
 

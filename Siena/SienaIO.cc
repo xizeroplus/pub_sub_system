@@ -56,7 +56,7 @@ static const char * PE_pubatt = "expecting keyword `pubatt'";
 static const char * PE_pubValue = "expecting keyword `PE_pubValue'";
 static const char * PE_pubsize = "expecting keyword `PE_pubsize'";
 
-static const char * Kwd_req = "req";
+static const char * Kwd_senp = "senp";
 static const char * Kwd_pub = "pub";
 static const char * Kwd_sub = "sub";
 static const char * Kwd_any = "any";
@@ -81,41 +81,290 @@ static const char * Kwd_op_xx = "any";
 namespace Siena {
 #endif
 
+//
+// byte stuffing function
+//
+string & encode_string(string &s)
+{
+	string::iterator si;
+	for(si = s.begin(); si != s.end(); ++si) {
+		switch(*si) {
+			case '"':
+			case '\\': s.insert(si, '\\'); break;
+			case '\n': *si = 'n'; s.insert(si, '\\'); break;
+			case '\0': *si = '0'; s.insert(si, '\\'); break;
+			case '\t': *si = 't'; s.insert(si, '\\'); break;
+			case '\a': *si = 'a'; s.insert(si, '\\'); break;
+			case '\b': *si = 'b'; s.insert(si, '\\'); break;
+			default: break;
+		}
+	}
+	s.insert(s.begin(),'"');
+	s.insert(s.end(),'"');
+	return s;
+}
+
 ostream &		operator << (ostream &os, const Pub &pub)
 {
-	os << Kwd_pub << ' ' << Kwd_lparen << ' ';
+	os << Kwd_pub << Kwd_lparen << ' ';
 	os << pub.tp.sec << ' ' << pub.tp.ns << ' ';
 	os << pub.pub_id << ' ' << pub.size << ' ';
 	for (int i=0; i<pub.size; ++i)
 		os << pub.pairs[i].att << ' ' << pub.pairs[i].value << ' ';
-	os <<  Kwd_rparen << endl;
+	os <<  Kwd_rparen;
 	return os;
 }
 
 ostream &		operator << (ostream &os, const purePub &pub)
 {
-	os << Kwd_pub << ' ' << Kwd_lparen << ' ';
+	os << Kwd_pub << Kwd_lparen << ' ';
 	os << pub.pub_id << ' ' << pub.size << ' ';
 	for (int i=0; i<pub.size; ++i)
 		os << pub.pairs[i].att << ' ' << pub.pairs[i].value << ' ';
-	os <<  Kwd_rparen << endl;
+	os <<  Kwd_rparen;
 	return os;
 }
 
 ostream &		operator << (ostream &os, const IntervalSub &sub)
 {
-	os << Kwd_sub << ' ' <<  Kwd_lparen << ' ';
+	os << Kwd_sub << Kwd_lparen << ' ';
 	string uri = sub.uri;
-	os << uri << ' ' << sub.size << ' ';
+	os << encode_string(uri) << ' ' << sub.size << ' ';
 	for (int i=0; i<sub.size; ++i)
 		os << sub.constraints[i].att << ' ' << sub.constraints[i].lowValue << ' ' << sub.constraints[i].highValue << ' ';
-	return os << Kwd_rparen << endl;
+	return os << Kwd_rparen;
 }
 
-ostream & operator << (ostream & os, const Request &r)
+ostream & operator << (ostream &os, const AttributeValue &a)
 {
-	os << Kwd_req << ' ' << Kwd_lparen << ' ' << r.type << ' ' << Kwd_rparen << endl;
+	switch (a.type()) {
+		case Siena_null: return os << Kwd_null;
+		case Siena_string: {
+			string s = a.string_value();
+			return os << encode_string(s);
+		}
+		case Siena_integer:
+			return os << a.int_value();
+		case Siena_bool:
+			return os << (a.bool_value() ? Kwd_true : Kwd_false);
+		case Siena_double:
+			return os << a.double_value();
+		default:
+			throw(BadType(a.type()));
+	}
+}
+
+ostream & write_attribute_set(ostream & os, const AttributeSet &s) {
+	for(AttributeSet::const_iterator si = s.begin(); si != s.end(); ++si) {
+		os << (*si).first << Kwd_op_eq << (*si).second << endl;
+	}
 	return os;
+}
+ostream & operator << (ostream & os, const Request &f)
+{
+	os << Kwd_senp << Kwd_lparen << endl;
+	return write_attribute_set(os, f) << Kwd_rparen;
+}
+
+
+//
+// INPUT
+//
+
+//
+// Tokenizer
+//
+enum TokenType {
+	TOK_unknown,
+	TOK_eof,
+	TOK_lparen,
+	TOK_rparen,
+	TOK_string,
+	TOK_int,
+	TOK_double,
+	TOK_id,
+	TOK_operator
+};
+
+struct Token {
+	TokenType		type;
+	union {
+		SienaOperator	op;
+		int		num;
+		string *	str;
+		double		dbl;
+	};
+
+	Token(): type(TOK_unknown) {};
+	~Token() {
+		if (type == TOK_id || type == TOK_string)
+			if (str != NULL) delete(str);
+	}
+};
+
+//
+// this is the tokenizer function, I know it's awfully long and it
+// might seem complicated, but it's really simple if you look at it as
+// a FSM
+//
+istream & operator >> (istream &is, Token &t)
+{
+	int c;
+	//
+	// first clears string possibly memorized in t
+	//
+	if (t.type == TOK_id || t.type == TOK_string)
+		if (t.str != NULL) delete(t.str);
+	t.type = TOK_unknown;
+	//
+	// initial state:
+	//
+	skip_spaces_and_comments:
+	if ((c = is.get()) == EOF) {
+		t.type = TOK_eof;
+		return is;
+	}
+	if (isspace(c)) goto skip_spaces_and_comments;
+	if (c == '/') {
+		if ((c = is.get()) == '/') {
+			while ((c = is.get()) != EOF && c != '\n');
+			goto skip_spaces_and_comments;
+		} else {
+			return is;
+		}
+	}
+	//
+	// reads a string literal
+	//
+	if (c == '"') {
+		t.type = TOK_string;
+		t.str = new string();
+		build_string_literal:
+		if ((c = is.get()) == EOF) goto bad_string;
+		if (c == '"') return is;
+		if (c == '\\') {
+			if ((c = is.get()) == EOF) goto bad_string;
+			switch (c) {
+				case '\\': *t.str += '\\'; break;
+				case '"': *t.str += '"'; break;
+				case 'n': *t.str += '\n'; break;
+				case 't': *t.str += '\t'; break;
+				case '0': *t.str += '\0'; break;
+					//
+					// to be continued ...work in progress...
+					//
+			}
+		}
+		else {
+			*t.str += c;
+		}
+		goto build_string_literal;
+		//
+		// EOF before string is closed by "
+		//
+		bad_string:
+		t.type = TOK_unknown;
+		delete(t.str);
+	}
+		//
+		// reads a number (integer or double)
+		//
+	else if (isdigit(c) || c == '-') {
+		bool negative = false;
+		if (c == '-') {
+			negative = true;
+			if ((c = is.get()) == EOF || !isdigit(c)) return is;
+		}
+		t.type = TOK_int;
+		t.num = 0;
+		unsigned int floatlevel = 1;
+		build_num_tok:
+		if (t.type == TOK_int) {
+			t.num = t.num * 10 + c - '0';
+		} else {
+			t.dbl = t.dbl + (double)(c - '0') / floatlevel;
+			floatlevel *= 10;
+		}
+		if ((c = is.get()) == EOF) return is;
+		if (isdigit(c)) { goto build_num_tok; }
+		else if (c == '.' && t.type == TOK_int) {
+			t.type = TOK_double;
+			t.dbl = t.num;
+			floatlevel = 10;
+			if ((c = is.get()) == EOF) return is;
+			if (isdigit(c)) goto build_num_tok;
+		}
+		is.putback(c);
+		if (negative) {
+			if (t.type == TOK_int) {
+				t.num = -t.num;
+			} else {
+				t.dbl = -t.dbl;
+			}
+		}
+	}
+	else if (c == '{') {
+		t.type = TOK_lparen;
+	}
+	else if (c == '}') {
+		t.type = TOK_rparen;
+	}
+	else if (c == '=') {
+		t.type = TOK_operator;
+		t.op = Siena_eq;
+	}
+	else if (c == '>') {
+		t.type = TOK_operator;
+		t.op = Siena_gt;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '=') {
+			t.op = Siena_ge;
+		} else if (c == '*') {
+			t.op = Siena_pf;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '<') {
+		t.type = TOK_operator;
+		t.op = Siena_lt;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '=') {
+			t.op = Siena_le;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '*') {
+		t.type = TOK_operator;
+		t.op = Siena_ss;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '<') {
+			t.op = Siena_sf;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '!') {
+		if ((c = is.get()) == '=') {
+			t.type = TOK_operator;
+			t.op = Siena_ne;
+		}
+	}
+		//
+		// reads an id
+		//
+	else if (isalpha(c)) {
+		t.type = TOK_id;
+		t.str = new string();
+
+		do {
+			*t.str += c;
+			if ((c = is.get()) == EOF) return is;
+		} while(isalpha(c));
+		is.putback(c);
+	}
+	return is;
 }
 
 
@@ -123,46 +372,78 @@ istream &		operator >> (istream &is, Pub &pub)
 {
 	pub.pairs.clear();
 	pub.pairs.shrink_to_fit();
-
-	string type, lpren, rpren;
-
-	is >> type;
-	if (type != "pub") return is;
-	is >> lpren >> pub.tp.sec >> pub.tp.ns >> pub.pub_id >> pub.size;
-
-	for (int i=0; i<pub.size; ++i)
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_pub)
+		throw ParseError(PE_pub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	is >> t;
+	if (t.type==TOK_int) pub.tp.sec = t.num;
+	is >> t;
+	if (t.type==TOK_int) pub.tp.ns = t.num;
+	is >> t;
+	if (t.type==TOK_int) pub.pub_id = t.num;
+	else throw ParseError(PE_pubid);
+	is >> t;
+	if (t.type == TOK_int)
+		pub.size = t.num;
+	else
+		throw ParseError(PE_pubsize);
+	while (1)
 	{
+		is >> t;
+		if (t.type == TOK_rparen) return is;
 		Pair p;
-		is >> p.att >> p.value;
+		if (t.type == TOK_int)
+			p.att = t.num;
+		else
+			throw ParseError(PE_pubatt);
+		is >> t;
+		if (t.type == TOK_int)
+			p.value = t.num;
+		else
+			throw ParseError(PE_pubValue);
 		pub.pairs.push_back(p);
 	}
-
-	is >> rpren;
-
-	if (rpren!="}") throw ParseError(PE_pubsize);
-	else return is;
 }
 
 istream &		operator >> (istream &is, purePub &pub)
 {
 	pub.pairs.clear();
 	pub.pairs.shrink_to_fit();
-
-	string type, lpren, rpren;
-
-	is >> type >> lpren >> pub.pub_id >> pub.size;
-
-	for (int i=0; i<pub.size; ++i)
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_pub)
+		throw ParseError(PE_pub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	is >> t;
+	if (t.type==TOK_int) pub.pub_id = t.num;
+	else throw ParseError(PE_pubid);
+	is >> t;
+	if (t.type == TOK_int)
+		pub.size = t.num;
+	else
+		throw ParseError(PE_pubsize);
+	while (1)
 	{
+		is >> t;
+		if (t.type == TOK_rparen) return is;
 		Pair p;
-		is >> p.att >> p.value;
+		if (t.type == TOK_int)
+			p.att = t.num;
+		else
+			throw ParseError(PE_pubatt);
+		is >> t;
+		if (t.type == TOK_int)
+			p.value = t.num;
+		else
+			throw ParseError(PE_pubValue);
 		pub.pairs.push_back(p);
 	}
-
-	is >> rpren;
-
-	if (rpren!="}") throw ParseError(PE_pubsize);
-	else return is;
 }
 
 
@@ -170,76 +451,570 @@ istream &		operator >> (istream &is, IntervalSub &sub)
 {
 	sub.constraints.clear();
 	sub.constraints.shrink_to_fit();
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_sub)
+		throw ParseError(PE_sub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
 
-	string type, lpren, rpren;
+	is >> t;
+	//todo
+	if (t.type==TOK_string) sub.uri = *(t.str);
+	else throw ParseError(PE_uri);
+	is >> t;
+	if (t.type==TOK_int) sub.size = t.num;
+	else throw ParseError(PE_subsize);
 
-	is >> type;
-
-	if (type != "sub") return is;
-
-	is >> lpren >> sub.uri >> sub.size;
-
-	for (int i=0; i<sub.size; ++i)
-	{
+	while (1) {
 		IntervalCnt c;
-		is >> c.att >> c.lowValue >> c.highValue;
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		if (t.type == TOK_int)
+			c.att = t.num;
+		else
+			throw ParseError(PE_subatt);
+		is >> t;
+
+		if (t.type == TOK_int)
+			c.lowValue = t.num;
+		else
+			throw ParseError(PE_lowValue);
+
+		is >> t;
+
+		if (t.type == TOK_int)
+			c.highValue = t.num;
+		else
+			throw ParseError(PE_highValue);
+
 		sub.constraints.push_back(c);
 	}
+}
+istream & operator >> (istream &is, AttributeValue &a)
+{
+	Token t;
 
-	is >> rpren;
-
-	if (rpren!="}") throw ParseError(PE_subsize);
-	else return is;
+	is >> t;
+	switch (t.type) {
+		case TOK_int: a = t.num; break;
+		case TOK_string: a = *t.str; break;
+		case TOK_double: a = t.dbl; break;
+		case TOK_id:
+			if (*t.str == Kwd_true) {
+				a = true;
+			} else if (*t.str == Kwd_false) {
+				a = false;
+			} else if (*t.str == Kwd_null) {
+				a = AttributeValue();
+			} else {
+				a = *t.str;
+			}
+			break;
+		case TOK_eof:
+			a = AttributeValue();
+			break;
+		default:
+			throw ParseError(PE_literal);
+	}
+	return is;
 }
 
 
-istream & operator >> (istream &is, Request &r)
+istream & read_attribute_set(istream &is, AttributeSet &as)
 {
-	string type, lpren, rpren;
+	Token t;
 
-	is >> type;
-    if (type != "req") return is;
-    is >> lpren >> r.type >> rpren;
+	as.clear();
+	while (1) {
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		if (t.type != TOK_id)
+			throw ParseError(PE_anamerparen);
+		string name(*t.str);
+		is >> t;
+		if (t.type != TOK_operator || t.op != Siena_eq)
+			throw ParseError(PE_equal);
+		is >> as[name];
+	}
+}
 
-	if (rpren!="}")
-        throw ParseError(rpren.c_str());
-	else return is;
+
+
+istream & operator >> (istream &is, Request &o)
+{
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_senp)
+		throw ParseError(PE_senp);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	return read_attribute_set(is,o);
+}
+
+
+
+
+
+
+//string part
+
+stringstream &		operator << (stringstream &os, const Pub &pub)
+{
+	os << Kwd_pub << Kwd_lparen << ' ';
+	os << pub.tp.sec << ' ' << pub.tp.ns << ' ';
+	os << pub.pub_id << ' ' << pub.size << ' ';
+	for (int i=0; i<pub.size; ++i)
+		os << pub.pairs[i].att << ' ' << pub.pairs[i].value << ' ';
+	os <<  Kwd_rparen;
+	return os;
+}
+
+stringstream &		operator << (stringstream &os, const purePub &pub)
+{
+	os << Kwd_pub << Kwd_lparen << ' ';
+	os << pub.pub_id << ' ' << pub.size << ' ';
+	for (int i=0; i<pub.size; ++i)
+		os << pub.pairs[i].att << ' ' << pub.pairs[i].value << ' ';
+	os <<  Kwd_rparen;
+	return os;
+}
+
+stringstream &		operator << (stringstream &os, const IntervalSub &sub)
+{
+	os << Kwd_sub << Kwd_lparen << ' ';
+	string uri = sub.uri;
+	os << encode_string(uri) << ' ' << sub.size << ' ';
+	for (int i=0; i<sub.size; ++i)
+		os << sub.constraints[i].att << ' ' << sub.constraints[i].lowValue << ' ' << sub.constraints[i].highValue << ' ';
+	os << Kwd_rparen;
+	return os;
+}
+
+stringstream & operator << (stringstream &os, const AttributeValue &a)
+{
+	switch (a.type()) {
+		case Siena_null:
+		{
+			os << Kwd_null;
+			return os;
+		}
+		case Siena_string: {
+			string s = a.string_value();
+			os << encode_string(s);
+			return os;
+		}
+		case Siena_integer:
+		{
+			os << a.int_value();
+			return os;
+		}
+		case Siena_bool:{
+			os << (a.bool_value() ? Kwd_true : Kwd_false);
+			return os;
+		}
+		case Siena_double:
+		{
+			os << a.double_value();
+			return os;
+		}
+		default:
+			throw(BadType(a.type()));
+	}
+}
+
+stringstream & write_attribute_set(stringstream & os, const AttributeSet &s) {
+	for(AttributeSet::const_iterator si = s.begin(); si != s.end(); ++si) {
+		os << (*si).first << Kwd_op_eq << (*si).second << endl;
+	}
+	return os;
+}
+stringstream & operator << (stringstream & os, const Request &f)
+{
+	os << Kwd_senp << Kwd_lparen << endl;
+	write_attribute_set(os, f) << Kwd_rparen;
+	return os;
+}
+
+
+stringstream & operator >> (stringstream &is, Token &t)
+{
+	int c;
+	//
+	// first clears string possibly memorized in t
+	//
+	if (t.type == TOK_id || t.type == TOK_string)
+		if (t.str != NULL) delete(t.str);
+	t.type = TOK_unknown;
+	//
+	// initial state:
+	//
+	skip_spaces_and_comments:
+	if ((c = is.get()) == EOF) {
+		t.type = TOK_eof;
+		return is;
+	}
+	if (isspace(c)) goto skip_spaces_and_comments;
+	if (c == '/') {
+		if ((c = is.get()) == '/') {
+			while ((c = is.get()) != EOF && c != '\n');
+			goto skip_spaces_and_comments;
+		} else {
+			return is;
+		}
+	}
+	//
+	// reads a string literal
+	//
+	if (c == '"') {
+		t.type = TOK_string;
+		t.str = new string();
+		build_string_literal:
+		if ((c = is.get()) == EOF) goto bad_string;
+		if (c == '"') return is;
+		if (c == '\\') {
+			if ((c = is.get()) == EOF) goto bad_string;
+			switch (c) {
+				case '\\': *t.str += '\\'; break;
+				case '"': *t.str += '"'; break;
+				case 'n': *t.str += '\n'; break;
+				case 't': *t.str += '\t'; break;
+				case '0': *t.str += '\0'; break;
+					//
+					// to be continued ...work in progress...
+					//
+			}
+		}
+		else {
+			*t.str += c;
+		}
+		goto build_string_literal;
+		//
+		// EOF before string is closed by "
+		//
+		bad_string:
+		t.type = TOK_unknown;
+		delete(t.str);
+	}
+		//
+		// reads a number (integer or double)
+		//
+	else if (isdigit(c) || c == '-') {
+		bool negative = false;
+		if (c == '-') {
+			negative = true;
+			if ((c = is.get()) == EOF || !isdigit(c)) return is;
+		}
+		t.type = TOK_int;
+		t.num = 0;
+		unsigned int floatlevel = 1;
+		build_num_tok:
+		if (t.type == TOK_int) {
+			t.num = t.num * 10 + c - '0';
+		} else {
+			t.dbl = t.dbl + (double)(c - '0') / floatlevel;
+			floatlevel *= 10;
+		}
+		if ((c = is.get()) == EOF) return is;
+		if (isdigit(c)) { goto build_num_tok; }
+		else if (c == '.' && t.type == TOK_int) {
+			t.type = TOK_double;
+			t.dbl = t.num;
+			floatlevel = 10;
+			if ((c = is.get()) == EOF) return is;
+			if (isdigit(c)) goto build_num_tok;
+		}
+		is.putback(c);
+		if (negative) {
+			if (t.type == TOK_int) {
+				t.num = -t.num;
+			} else {
+				t.dbl = -t.dbl;
+			}
+		}
+	}
+	else if (c == '{') {
+		t.type = TOK_lparen;
+	}
+	else if (c == '}') {
+		t.type = TOK_rparen;
+	}
+	else if (c == '=') {
+		t.type = TOK_operator;
+		t.op = Siena_eq;
+	}
+	else if (c == '>') {
+		t.type = TOK_operator;
+		t.op = Siena_gt;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '=') {
+			t.op = Siena_ge;
+		} else if (c == '*') {
+			t.op = Siena_pf;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '<') {
+		t.type = TOK_operator;
+		t.op = Siena_lt;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '=') {
+			t.op = Siena_le;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '*') {
+		t.type = TOK_operator;
+		t.op = Siena_ss;
+		if ((c = is.get()) == EOF) return is;
+		if (c == '<') {
+			t.op = Siena_sf;
+		} else {
+			is.putback(c);
+		}
+	}
+	else if (c == '!') {
+		if ((c = is.get()) == '=') {
+			t.type = TOK_operator;
+			t.op = Siena_ne;
+		}
+	}
+		//
+		// reads an id
+		//
+	else if (isalpha(c)) {
+		t.type = TOK_id;
+		t.str = new string();
+
+		do {
+			*t.str += c;
+			if ((c = is.get()) == EOF) return is;
+		} while(isalpha(c));
+		is.putback(c);
+	}
+	return is;
+}
+
+
+stringstream &		operator >> (stringstream &is, Pub &pub)
+{
+	pub.pairs.clear();
+	pub.pairs.shrink_to_fit();
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_pub)
+		throw ParseError(PE_pub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	is >> t;
+	if (t.type==TOK_int) pub.tp.sec = t.num;
+	is >> t;
+	if (t.type==TOK_int) pub.tp.ns = t.num;
+	is >> t;
+	if (t.type==TOK_int) pub.pub_id = t.num;
+	else throw ParseError(PE_pubid);
+	is >> t;
+	if (t.type == TOK_int)
+		pub.size = t.num;
+	else
+		throw ParseError(PE_pubsize);
+	while (1)
+	{
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		Pair p;
+		if (t.type == TOK_int)
+			p.att = t.num;
+		else
+			throw ParseError(PE_pubatt);
+		is >> t;
+		if (t.type == TOK_int)
+			p.value = t.num;
+		else
+			throw ParseError(PE_pubValue);
+		pub.pairs.push_back(p);
+	}
+}
+
+stringstream &		operator >> (stringstream &is, purePub &pub)
+{
+	pub.pairs.clear();
+	pub.pairs.shrink_to_fit();
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_pub)
+		throw ParseError(PE_pub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	is >> t;
+	if (t.type==TOK_int) pub.pub_id = t.num;
+	else throw ParseError(PE_pubid);
+	is >> t;
+	if (t.type == TOK_int)
+		pub.size = t.num;
+	else
+		throw ParseError(PE_pubsize);
+	while (1)
+	{
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		Pair p;
+		if (t.type == TOK_int)
+			p.att = t.num;
+		else
+			throw ParseError(PE_pubatt);
+		is >> t;
+		if (t.type == TOK_int)
+			p.value = t.num;
+		else
+			throw ParseError(PE_pubValue);
+		pub.pairs.push_back(p);
+	}
+}
+
+
+stringstream &		operator >> (stringstream &is, IntervalSub &sub)
+{
+	sub.constraints.clear();
+	sub.constraints.shrink_to_fit();
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_sub)
+		throw ParseError(PE_sub);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+
+	is >> t;
+	//todo
+	if (t.type==TOK_string) sub.uri = *(t.str);
+	else throw ParseError(PE_uri);
+	is >> t;
+	if (t.type==TOK_int) sub.size = t.num;
+	else throw ParseError(PE_subsize);
+
+	while (1) {
+		IntervalCnt c;
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		if (t.type == TOK_int)
+			c.att = t.num;
+		else
+			throw ParseError(PE_subatt);
+		is >> t;
+
+		if (t.type == TOK_int)
+			c.lowValue = t.num;
+		else
+			throw ParseError(PE_lowValue);
+
+		is >> t;
+
+		if (t.type == TOK_int)
+			c.highValue = t.num;
+		else
+			throw ParseError(PE_highValue);
+
+		sub.constraints.push_back(c);
+	}
+}
+stringstream & operator >> (stringstream &is, AttributeValue &a)
+{
+	Token t;
+
+	is >> t;
+	switch (t.type) {
+		case TOK_int: a = t.num; break;
+		case TOK_string: a = *t.str; break;
+		case TOK_double: a = t.dbl; break;
+		case TOK_id:
+			if (*t.str == Kwd_true) {
+				a = true;
+			} else if (*t.str == Kwd_false) {
+				a = false;
+			} else if (*t.str == Kwd_null) {
+				a = AttributeValue();
+			} else {
+				a = *t.str;
+			}
+			break;
+		case TOK_eof:
+			a = AttributeValue();
+			break;
+		default:
+			throw ParseError(PE_literal);
+	}
+	return is;
+}
+
+
+stringstream & read_attribute_set(stringstream &is, AttributeSet &as)
+{
+	Token t;
+
+	as.clear();
+	while (1) {
+		is >> t;
+		if (t.type == TOK_rparen) return is;
+		if (t.type != TOK_id)
+			throw ParseError(PE_anamerparen);
+		string name(*t.str);
+		is >> t;
+		if (t.type != TOK_operator || t.op != Siena_eq)
+			throw ParseError(PE_equal);
+		is >> as[name];
+	}
+}
+
+
+
+stringstream & operator >> (stringstream &is, Request &o)
+{
+	Token t;
+	is >> t;
+	if (t.type == TOK_eof) return is;
+	if (t.type != TOK_id || *t.str != Kwd_senp)
+		throw ParseError(PE_senp);
+	is >> t;
+	if (t.type != TOK_lparen) throw ParseError(PE_lparen);
+	return read_attribute_set(is,o);
 }
 
 
 string encode(Request &r, Pub &pub)
 {
-    ostringstream os;
+    stringstream os;
     os << r << pub;
     return os.str();
 }
 string encode(Request &r, IntervalSub &sub){
-    ostringstream os;
+    stringstream os;
     os << r << sub;
     return os.str();
 }
 
 void decode(string & str, Request &r, Pub &pub){
-    istringstream is(str);
-    is >> r >> pub;
+    stringstream os;
+    os << str;
+    os >> r >> pub;
 }
 
 void decode(string & str, Request &r, IntervalSub &sub){
-	istringstream is(str);
-    is >> r >> sub;
+    stringstream os;
+    os << str;
+    os >> r >> sub;
 }
 
-void decode(istringstream &is, Request &r)
-{
-	is >> r;
-}
-void decode(istringstream &is, Pub &p)
-{
-	is >> p;
-}
-void decode(istringstream &is, IntervalSub &s)
-{
-	is >> s;
+void decode(string & str, Request &r){
+	stringstream os;
+	os << str;
+	os >> r;
 }
 
 

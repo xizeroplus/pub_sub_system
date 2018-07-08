@@ -1,4 +1,4 @@
-# Install script for directory: /home/mg2015started/modifiedsiena/5-14/ClientReceiver
+# Install script for directory: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mg2015started/modifiedsiena/5-14/ClientReceiver/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

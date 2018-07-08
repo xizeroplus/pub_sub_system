@@ -86,35 +86,34 @@ void oldRein::match(const Pub &pub, string  myuri, ThreadPool<pair<string,Pub> >
 
     //Timer t5;
     int b = LvURI.size();
-    //ofstream fileStream;
-    //fileStream.open("reinlog.txt",ios::app);
     for (int i = 0; i < b; i++)
         if (!bitset[i]){
-            pool.Submit(make_pair(LvURI[i], pub));
             //cout << pub.pub_id << endl;
             /*
             struct timespec tv;
             clock_gettime(CLOCK_REALTIME, &tv);
             double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
 
-
+            pool.Submit(make_pair(_Lv[i], pub));
 
             thread t(&Rein::recordTime,this,pub.pub_id,time_interval);
             t.detach();
+            */
 
+            struct timespec tv;
+            clock_gettime(CLOCK_REALTIME, &tv);
+            double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
 
-            //struct timespec tv;
-            //clock_gettime(CLOCK_REALTIME, &tv);
-            //double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
-
-            //fileStream<< pub.pub_id << '\t' << time_interval << endl;
+            ofstream fileStream;
+            fileStream.open("reinlog.txt",ios::app);
+            fileStream<< pub.pub_id << '\t' << time_interval << endl;
 
             Sender * master = Sender::create_sender(LvURI[i]);
             //cout << "bad" << record.first << endl;
             Pub p = pub;
             try{
                 Request r;
-                r.type = 1;
+                r[SENP::Method] = SENP::PUB;
                 //r[SENP::Publisher] = myuri;
                 string packet = encode(r, p);
                 master->send(packet.data(), packet.size());
@@ -124,9 +123,7 @@ void oldRein::match(const Pub &pub, string  myuri, ThreadPool<pair<string,Pub> >
                 cout << "matching" << endl;
             }
             delete(master);
-            */
         }
-    //fileStream.close();
     //tagtime += t5.elapsed_nano()/1000000.0;
 /*
     f0 << pretime << "\n";

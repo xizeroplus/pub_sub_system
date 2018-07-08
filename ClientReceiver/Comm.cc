@@ -466,14 +466,7 @@ void UDPSender::send(const char * buf, size_t s) throw (CommException) {
 	if (sock_fd < 0)
 	    throw SocketError(SocketError::Create, errno);
 
-
-		struct ifreq ifr;
-		memset(&ifr, 0x00, sizeof(ifr));
-		strncpy(ifr.ifr_name, "eth0", IFNAMSIZE);
-		setsockopt(sock_fd, SOL_SOCKET, SO_BINDTODEVICE, (char *)&ifr, sizeof(ifr));
-
-
-		sockaddr_in addr;
+	sockaddr_in addr;
 	addr.sin_addr.s_addr = ip;
 	addr.sin_port = htons(port);
 	addr.sin_family = AF_INET;
@@ -559,7 +552,7 @@ TCPReceiver::TCPReceiver(in_port_t p, const char * hostname,
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
 
     // Get the port number from the socket, just in case the user passed in "0"
     // 
@@ -589,7 +582,7 @@ TCPReceiver::TCPReceiver(in_port_t p, const char * hostname,
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, TCPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;
@@ -611,7 +604,7 @@ UDPReceiver::UDPReceiver(in_port_t p, const char * hostname, bool reuse)
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, UDPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;
@@ -631,7 +624,7 @@ UDPReceiver::UDPReceiver(in_port_t p, const char * hostname, bool reuse)
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, UDPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;

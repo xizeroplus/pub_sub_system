@@ -29,6 +29,8 @@ options:\n\
 
 int main (int argc, char *argv[])
 {
+    string host = "udp://127.0.0.1:7001/";
+    string server = "udp://127.0.0.1:1969";
     int subs;           // Number of subscriptions.
     int pubs;           // Number of publications.
     int attDom;           // Total number of attributes, i.e. dimensions.
@@ -47,7 +49,6 @@ int main (int argc, char *argv[])
     double equalRatio;
     int old_buck_num;
     int new_buck_num;
-    string host = "udp://127.0.0.1:7001/";
 
     ifstream parafile;
     parafile.open(string("./paras/paras_1")+string(".txt"));
@@ -61,7 +62,6 @@ int main (int argc, char *argv[])
     gen.GenPubList();
     cout << "gen datalist finished" << endl;
 
-    string server = "udp://127.0.0.1:1969";
     S = new SimpleSiena(server);
 
     for (int i=1; i< argc; ++i) {	// parses command-line parameters

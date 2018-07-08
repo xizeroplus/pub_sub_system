@@ -58,10 +58,7 @@ void EventServer::initialize(const string & mu, int _valDom, int k, int buck_num
     //
     myuri = mu;
     rein.initialize(_valDom,buck_num);
-    pool.initialize(1);
-    ofstream fileStream;
-    fileStream.open("reinlog.txt");
-    fileStream.close();
+    pool.initialize(4);
 }
 
 void EventServer::set_receiver(Receiver *r) {

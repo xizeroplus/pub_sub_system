@@ -1860,3 +1860,59 @@ make[2]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/C
 make[1]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/EventSender/CMakeFiles/CMakeTmp'
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9882d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9882d.dir/build.make CMakeFiles/cmTC_9882d.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9882d.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_9882d.dir/CheckIncludeFile.c.o   -c /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_9882d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9882d.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_9882d.dir/CheckIncludeFile.c.o  -o cmTC_9882d 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8edc3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8edc3.dir/build.make CMakeFiles/cmTC_8edc3.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_8edc3.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_8edc3.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_8edc3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8edc3.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_8edc3.dir/CheckFunctionExists.c.o  -o cmTC_8edc3 -lpthread 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a3247/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a3247.dir/build.make CMakeFiles/cmTC_a3247.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a3247.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_a3247.dir/CheckIncludeFile.c.o   -c /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_a3247
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a3247.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_a3247.dir/CheckIncludeFile.c.o  -o cmTC_a3247 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7369c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7369c.dir/build.make CMakeFiles/cmTC_7369c.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7369c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_7369c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7369c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7369c.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_7369c.dir/CheckFunctionExists.c.o  -o cmTC_7369c -lpthread 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/EventSender/CMakeFiles/CMakeTmp'
+
+

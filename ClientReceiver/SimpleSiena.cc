@@ -64,7 +64,7 @@ Receiver * SimpleSiena::get_receiver() {
 void SimpleSiena::publish(Pub &pub)
 {
     Request r;
-    r.type = 1;
+    r[SENP::Method] = SENP::PUB;
     string packet = encode(r, pub);
     master->send(packet.data(), packet.size());
 }
@@ -106,7 +106,8 @@ void SimpleSiena::subscribe(IntervalSub &sub)
 {
     try{
         Request r;
-        r.type = 0;
+        r[SENP::Method] = SENP::SUB;
+        r[SENP::Subscriber] = sub.uri;
         string packet = encode(r, sub);
         master->send(packet.data(), packet.size());
     }
@@ -123,7 +124,7 @@ void SimpleSiena::exit_loop()
 
 void SimpleSiena::main_loop()
 {
-    int SENP_MAXPACKETLEN = 1024;
+    int SENP_MAXPACKETLEN = 102400;
     if (receiver == NULL) exit(-1);
     char pktbuf[SENP_MAXPACKETLEN];
     ssize_t pktsize;
@@ -140,31 +141,47 @@ void SimpleSiena::main_loop()
 
     struct timespec tv;
     in_loop = true;
+    freopen("avg_time.txt", "w", stdout);
+    int pre_id = 0;
+    int count = 0;
+    double sum_time = 0;
     while(in_loop) {
         memset(pktbuf,0,SENP_MAXPACKETLEN);
         pktsize = receiver->receive(pktbuf, SENP_MAXPACKETLEN);
         if (pktsize < 0) exit(-1);
         string str = string(pktbuf, pktsize);
         decode(str,r, pub);
+	Request::iterator method_i = r.find(SENP::Method);
+	if (method_i == r.end() || (*method_i).second.type()!=Siena_string) {
+	    cout << SENP::RE_BadRequest << flush;
+	} else if ((*method_i).second.string_value() == SENP::PUB) {
+        struct timespec tv;
+        clock_gettime(CLOCK_REALTIME, &tv);
+        double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
+	
+	if (pub.pub_id != pre_id)
+	{
+	    cout << pre_id << '\t' << sum_time / count << endl;
+	    count = 0;
+	    sum_time = 0;
+	    pre_id = pub.pub_id;	
+	}	
+	sum_time += time_interval;
+	count++;
+	
+	
 
+        /*
+        thread t(&SimpleSiena::recordTime,this,pub.pub_id,time_interval);
+        t.detach();
+        */
 
-        if (r.type!=1) cout << SENP::RE_BadRequest << flush;
-        else
-        {
-            struct timespec tv;
-            clock_gettime(CLOCK_REALTIME, &tv);
-            double time_interval = (tv.tv_sec - pub.tp.sec)*1000 + (tv.tv_nsec - pub.tp.ns)/1000000.0;
+        ofstream fileStream;
+        fileStream.open("rcv_time.txt",ios::app);
+        fileStream<< pub.pub_id << '\t' << time_interval << endl;
+        fileStream.close();
 
-            /*
-            thread t(&SimpleSiena::recordTime,this,pub.pub_id,time_interval);
-            t.detach();
-            */
-
-            ofstream fileStream;
-            fileStream.open("rcv_time.txt",ios::app);
-            fileStream<< pub.pub_id << '\t' << time_interval << endl;
-            fileStream.close();
-        }
+	}
     }
 }
 

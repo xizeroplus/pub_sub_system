@@ -107,7 +107,7 @@ void Rein::match(const Pub &pub, string  myuri, ThreadPool<pair<string,Pub> > & 
                 Pub p = pub;
                 try{
                     Request r;
-                    r.type = 1;
+                    r[SENP::Method] = SENP::PUB;
                     //r[SENP::Publisher] = myuri;
                     string packet = encode(r, p);
                     master->send(packet.data(), packet.size());

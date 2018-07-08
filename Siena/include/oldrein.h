@@ -22,8 +22,8 @@
 
 using namespace std;
 
-const int OLD_MAX_SUBS = 2000001;
-const int OLD_MAX_ATTS = 101;
+const int OLD_MAX_SUBS = 1000001;
+const int OLD_MAX_ATTS = 1001;
 const int OLD_MAX_BUCKS = 1000;
 
 class oldRein{

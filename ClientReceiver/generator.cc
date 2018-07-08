@@ -218,7 +218,7 @@ void intervalGenerator::GenSubList()
     {
         IntervalSub &sub = subList[i];
         fileStream << sub;
-        //fileStream << "\n";
+        fileStream << "\n";
     }
     fileStream.close();
 }
@@ -228,7 +228,8 @@ IntervalSub intervalGenerator::GenOneSub(int id)
 {
     IntervalSub sub;
     sub.uri = host+to_string(id);
-    sub.size = random(k) + 1;
+    //sub.size = random(k) + 1;
+    sub.size = k;
     if (subAttDis == 0)
         GenUniformAtts(sub);
     else if (subAttDis==1)
@@ -325,7 +326,7 @@ void intervalGenerator::GenPubList()
     {
         Pub &pub = pubList[i];
         fileStream << pub;
-        //fileStream << "\n";
+        fileStream << "\n";
     }
     fileStream.close();
 }

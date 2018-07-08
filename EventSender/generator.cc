@@ -218,7 +218,7 @@ void intervalGenerator::GenSubList()
     {
         IntervalSub &sub = subList[i];
         fileStream << sub;
-        //fileStream << "\n";
+        fileStream << "\n";
     }
     fileStream.close();
 }
@@ -325,7 +325,7 @@ void intervalGenerator::GenPubList()
     {
         Pub &pub = pubList[i];
         fileStream << pub;
-        //fileStream << "\n";
+        fileStream << "\n";
     }
     fileStream.close();
 }
@@ -352,9 +352,10 @@ void intervalGenerator::GenUniformAtts(Pub &pub)
     vector<int> a;
     for (int i = 0; i < pub.size; i++)
     {
-        int x = random(attDom);
-        while (CheckExist(a,x))
-            x = random(attDom);
+        //int x = random(attDom);
+	int x = i;        
+	//while (CheckExist(a,x))
+        //    x = random(attDom);
         a.push_back(x);
         Pair tmp;
         tmp.att = x;

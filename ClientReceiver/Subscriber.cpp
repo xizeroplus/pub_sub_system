@@ -32,6 +32,13 @@ options:\n\
 
 int main (int argc, char *argv[])
 {
+
+    string host = "udp://127.0.0.1:7001/";
+    string h = "127.0.0.1";
+    int port=7001;
+
+    string server = "udp://127.0.0.1:1969";
+
     cout << "begin" << endl;
     int subs;           // Number of subscriptions.
     int pubs;           // Number of publications.
@@ -60,19 +67,19 @@ int main (int argc, char *argv[])
     //m = atts;           // Note that Rein requires m == atts.
 
     // Initiate generator
-    string host = "udp://127.0.0.1:7001/";
     intervalGenerator gen(subs, pubs, k, m, subAttDis, subValDis, pubAttDis, pubValDis, attDom, valDom, subAttalpha ,subValalpha ,pubAttalpha, pubValalpha, width, equalRatio, host);
     gen.GenSubList();
     cout << "gen datalist finished" << endl;
 
-    string h = "127.0.0.1";
-    int port=7001;
-
-    string server = "udp://127.0.0.1:1969";
     S = new SimpleSiena(server);
     UDPReceiver *r = new UDPReceiver(port, h.c_str());// create receiver for
 
     S->set_receiver(r);
+
+
+
+
+
 
     for (int i=1; i< argc; ++i) {	// parses command-line parameters
         if (strcmp(argv[i], "-port")==0) {

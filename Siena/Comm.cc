@@ -552,7 +552,7 @@ TCPReceiver::TCPReceiver(in_port_t p, const char * hostname,
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
 
     // Get the port number from the socket, just in case the user passed in "0"
     // 
@@ -582,7 +582,7 @@ TCPReceiver::TCPReceiver(in_port_t p, const char * hostname,
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, TCPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;
@@ -604,7 +604,7 @@ UDPReceiver::UDPReceiver(in_port_t p, const char * hostname, bool reuse)
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, UDPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;
@@ -624,7 +624,7 @@ UDPReceiver::UDPReceiver(in_port_t p, const char * hostname, bool reuse)
     //
     // QUICK HACK!  ...work in progress...
     //
-    char buf[256];
+    char buf[25600];
     sprintf(buf, HostPortURIFormat, UDPSenderSchema,
 	    (hostname == NULL) ? this_hostname().c_str() : hostname, port);
     _uri = buf;

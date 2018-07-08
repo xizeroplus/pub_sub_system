@@ -48,14 +48,21 @@ istream &		operator >> (istream &, IntervalSub &);
 istream &		operator >> (istream &, Pub &);
 istream &		operator >> (istream &, Request &);
 
+stringstream &		operator << (stringstream &, const IntervalSub &);
+stringstream &		operator << (stringstream &, const Pub &);
+stringstream &		operator << (stringstream &, const Request &);
+
+stringstream &		operator >> (stringstream &, IntervalSub &);
+stringstream &		operator >> (stringstream &, Pub &);
+stringstream &		operator >> (stringstream &, Request &);
+
 string encode(Request &r, Pub &p);
 string encode(Request &r, IntervalSub &s);
 
-void decode(istringstream &is, Request &r);
-void decode(istringstream &is, Pub &p);
-void decode(istringstream &is, IntervalSub &s);
 void decode(string & str, Request &r, Pub &p);
 void decode(string & str, Request &r, IntervalSub &s);
+
+void decode(string & str, Request &);
 
 class ParseError: virtual public exception {
     const char * _what;

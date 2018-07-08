@@ -1856,3 +1856,31 @@ Linking C executable cmTC_b81c1
 make[1]: Leaving directory '/home/mg2015started/modifiedsiena/5-14/ClientReceiver/CMakeFiles/CMakeTmp'
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0644b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0644b.dir/build.make CMakeFiles/cmTC_0644b.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0644b.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_0644b.dir/CheckIncludeFile.c.o   -c /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_0644b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0644b.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_0644b.dir/CheckIncludeFile.c.o  -o cmTC_0644b 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp'
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2a96a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2a96a.dir/build.make CMakeFiles/cmTC_2a96a.dir/build
+make[1]: Entering directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2a96a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_2a96a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2a96a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2a96a.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_2a96a.dir/CheckFunctionExists.c.o  -o cmTC_2a96a -lpthread 
+make[1]: Leaving directory '/home/mwc/Documents/Code/MatchingAlgorithm/pub_sub_system/ClientReceiver/CMakeFiles/CMakeTmp'
+
+
