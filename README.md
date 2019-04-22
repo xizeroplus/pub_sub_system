@@ -1,3 +1,13 @@
+运行指令：
+Server:
+```python
+rm CMakeCache.txt
+cmake CMakeList.txt
+make
+./Siena -log "log.txt" -port 1969 -identity "127.0.0.1" &> topology.kill
+```
+
+
 分为３个部分，ClientReciever(用户端发出订阅信息和接受匹配到的信息）、EventSender(事件生成端和发送端）、Siena(服务器端，用于接收订阅(sub)和事件(pub)，并进行匹配并发出）
 
 #各文件含义：
